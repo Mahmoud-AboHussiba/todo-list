@@ -1,10 +1,61 @@
-import React from 'react';
+import React from "react";
 import { IconButton, Input } from "@material-tailwind/react";
 import { Trash, EditPencil, Check } from "iconoir-react";
-import Todo from './Todo';
+import Todo from "./Todo";
+import { v4 as uuidv4 } from "uuid";
+import { useState } from "react";
 
+const intialTodos = [
+  {
+    id: uuidv4(),
+    title: "قراءة القرآن",
+    description: " قراءة القرآن الكريم من الآية الأولى إلى الآية الأخيرة",
+    isCompleted: true,
+  },
+  {
+    id: uuidv4(),
+    title: " ممارسة التمارين الرياضية",
+    description: " ممارسة التمارين الرياضية للحفاظ على صحتك الجسدية",
+    isCompleted: false,
+  },
+  {
+    id: uuidv4(),
+    title: "التطوع في المجتمع",
+    description: "التطوع في المجتمع للمساعدة في المجتمع",
+    isCompleted: false,
+  },
+];
 
 export default function TodoList() {
+  const [todos, setTodos] = useState(intialTodos);
+  const [titleInput, setTitleInput] = useState("");
+
+  function handleIsCheckClick(id) {
+    const newTodos = todos.map((todo) => {
+      if (todo.id === id) {
+        return { ...todo, isCompleted: !todo.isCompleted };
+      }
+      return todo;
+    });
+    setTodos(newTodos);
+  }
+
+  const todosJsx = todos.map((todo) => (
+    <Todo key={todo.id} todo={todo} handleCheck={handleIsCheckClick} />
+  ));
+
+  function handleAddClick(e) {
+    e.preventDefault();
+    const newTodo = {
+      id: uuidv4(),
+      title: titleInput,
+      description: "",
+      isCompleted: false,
+    };
+    setTodos([...todos, newTodo]);
+    setTitleInput("");
+  }
+
   return (
     <div className="container size-6/12 py-5 bg-white rounded-lg border-2 border-gray-300">
       <div className="py-2">
@@ -42,114 +93,25 @@ export default function TodoList() {
       {/* End Nav */}
 
       {/* Start Tasks List */}
-      <div className="flex flex-col gap-4  ">
-        <Todo id={1} title={" العنوان الاول"} description={"الوصف الاول"} />
-
-        {/* Start Task */}
-        <div className=" bg-blue-700 rounded-lg flex flex-row justify-between p-4 hover:transition-all hover:delay-500 hover:py-6">
-          {/* Task Data */}
-          <div className="basis-1/2 flex flex-row  ">
-            <div className="flex items-center flex-col">
-              <h3 className="font-bold text-white">العنوان</h3>
-              <p className="text-white">الوصف</p>
-            </div>
-          </div>
-          {/* Task Data */}
-
-          {/* Actions */}
-          <div dir="ltr" className="basis-1/2 flex flex-row gap-3 ">
-            <div className="flex items-center">
-              <IconButton
-                isCircular
-                variant="outline"
-                className="border-[#ea4c89] bg-white hover:bg-slate-300;"
-              >
-                <Trash
-                  className="outline-red-500 h-4 w-4 stroke-2 stroke-red-500"
-                  color="red"
-                />
-              </IconButton>
-            </div>
-            <div className="flex items-center">
-              <IconButton
-                isCircular
-                variant="outline"
-                className="border-blue-500 bg-white hover:bg-slate-300"
-              >
-                <EditPencil className="h-4 w-4 stroke-2" color="#3b82f6" />
-              </IconButton>
-            </div>
-            <div className="flex items-center">
-              <IconButton
-                isCircular
-                variant="outline"
-                className="border-green-500 bg-green-500 hover:bg-slate-300"
-              >
-                <Check className="h-4 w-4 stroke-2" color="white" />
-              </IconButton>
-            </div>
-          </div>
-          {/* Actions */}
-        </div>
-        {/* End Task */}
-
-        {/* Start Task */}
-        <div className=" bg-blue-700 rounded-lg flex flex-row justify-between p-4 hover:transition-all hover:delay-700 hover:py-6">
-          {/* Task Data */}
-          <div className="basis-1/2 flex flex-row  ">
-            <div className="flex items-center flex-col">
-              <h3 className="font-bold text-white">العنوان</h3>
-              <p className="text-white">الوصف</p>
-            </div>
-          </div>
-          {/* Task Data */}
-
-          {/* Actions */}
-          <div dir="ltr" className="basis-1/2 flex flex-row gap-3 ">
-            <div className="flex items-center">
-              <IconButton
-                isCircular
-                variant="outline"
-                className="border-[#ea4c89] bg-white hover:bg-slate-300"
-              >
-                <Trash
-                  className="outline-red-500 h-4 w-4 stroke-2 stroke-red-500"
-                  color="red"
-                />
-              </IconButton>
-            </div>
-            <div className="flex items-center">
-              <IconButton
-                isCircular
-                variant="outline"
-                className="border-blue-500 bg-white hover:bg-slate-300"
-              >
-                <EditPencil className="h-4 w-4 stroke-2" color="#3b82f6" />
-              </IconButton>
-            </div>
-            <div className="flex items-center">
-              <IconButton
-                isCircular
-                variant="outline"
-                className="border-green-500 bg-green-500 hover:bg-slate-300"
-              >
-                <Check className="h-4 w-4 stroke-2" color="white" />
-              </IconButton>
-            </div>
-          </div>
-          {/* Actions */}
-        </div>
-        {/* End Task */}
-      </div>
+      <div className="flex flex-col gap-4  ">{todosJsx}</div>
       {/* End Tasks List */}
 
       {/* Start Add Task */}
       <form className="flex flex-row gap-3 pt-4">
         <div className="w-3/4">
-          <Input placeholder="عنوان المهمة" className="text-right" />
+          <Input
+            placeholder="عنوان المهمة"
+            className="text-right"
+            value={titleInput}
+            onChange={(e) => setTitleInput(e.target.value)}
+          />
         </div>
         <div className="w-1/4">
-          <IconButton type="submit" className="w-full bg-red-800">
+          <IconButton
+            type="submit"
+            className="w-full bg-red-800"
+            onClick={handleAddClick}
+          >
             إضافة
           </IconButton>
         </div>
