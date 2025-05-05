@@ -58,6 +58,7 @@ export default function EditModal({ todo }) {
             color="secondary"
             className="absolute left-2 top-2"
             isCircular
+            onClick={() => setOpen(false)}
           >
             <Xmark className="h-5 w-5" />
           </Dialog.DismissTrigger>
@@ -114,14 +115,29 @@ export default function EditModal({ todo }) {
               </Typography>
             </div>
 
-            <Button
-              isFullWidth
-              onClick={(e) => {
-                handelSaveClick();
-              }}
-            >
-              تعديل
-            </Button>
+            <div className="flex flex-row items-center justify-between gap-2">
+              <Button
+                isFullWidth
+                onClick={(e) => {
+                  handelSaveClick();
+                }}
+              >
+                تعديل
+              </Button>
+
+              <Button
+                isFullWidth
+                onClick={(e) => {
+                  setTitle(todo.title);
+                  setDescription(todo.description);
+                  setIsCompleted(todo.isCompleted);   
+                  setOpen(false);
+                }}
+                className=" border-red-500 bg-red-500 hover:bg-red-600"
+              >
+                إلغاء
+              </Button>
+            </div>
           </div>
         </Dialog.Content>
       </Dialog.Overlay>
