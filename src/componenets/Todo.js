@@ -1,13 +1,28 @@
-import React from 'react'
-import { Trash, EditPencil, Check } from "iconoir-react";
+import React from "react";
+import { EditPencil, Check } from "iconoir-react";
 import { IconButton } from "@material-tailwind/react";
+import { useContext } from "react";
+import { TodosContext } from "../contexts/todosContext";
+import DeleteModal from "./DeleteModal";
+import EditModal from "./EditModal";
 
+export default function Todo({ todo }) {
+  const { todos, setTodos } = useContext(TodosContext);
 
-export default function Todo({ todo, handleCheck }) {
+  function handleCheckClick() {
+    const newTodos = todos.map((t) => {
+      if (t.id === todo.id) {
+        return { ...t, isCompleted: !t.isCompleted };
+      }
+      return t;
+    });
+    setTodos(newTodos);
+  }
+
   const checkClass = todo.isCompleted
     ? "bg-green-500 border-green-500 hover:bg-slate-300"
     : "bg-white border-green-500 hover:bg-slate-300";
-  
+
   return (
     <>
       {/* Start Task */}
@@ -24,32 +39,17 @@ export default function Todo({ todo, handleCheck }) {
         {/* Actions */}
         <div dir="ltr" className="basis-1/2 flex flex-row gap-3 ">
           <div className="flex items-center">
-            <IconButton
-              isCircular
-              variant="outline"
-              className="border-[#ea4c89] bg-white hover:bg-slate-300"
-            >
-              <Trash
-                className="outline-red-500 h-4 w-4 stroke-2 stroke-red-500"
-                color="red"
-              />
-            </IconButton>
+            <DeleteModal todo={todo}></DeleteModal>
           </div>
           <div className="flex items-center">
-            <IconButton
-              isCircular
-              variant="outline"
-              className="border-blue-500 bg-white hover:bg-slate-300"
-            >
-              <EditPencil className="h-4 w-4 stroke-2" color="#3b82f6" />
-            </IconButton>
+            <EditModal todo={todo}></EditModal>
           </div>
           <div className="flex items-center">
             <IconButton
               isCircular
               variant="outline"
               className={checkClass}
-              onClick={() => handleCheck(todo.id)}
+              onClick={() => handleCheckClick()}
             >
               <Check
                 className="h-4 w-4 stroke-2"

@@ -1,47 +1,20 @@
 import React from "react";
 import { IconButton, Input } from "@material-tailwind/react";
-import { Trash, EditPencil, Check } from "iconoir-react";
 import Todo from "./Todo";
 import { v4 as uuidv4 } from "uuid";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { TodosContext } from "../contexts/todosContext";
 
-const intialTodos = [
-  {
-    id: uuidv4(),
-    title: "قراءة القرآن",
-    description: " قراءة القرآن الكريم من الآية الأولى إلى الآية الأخيرة",
-    isCompleted: true,
-  },
-  {
-    id: uuidv4(),
-    title: " ممارسة التمارين الرياضية",
-    description: " ممارسة التمارين الرياضية للحفاظ على صحتك الجسدية",
-    isCompleted: false,
-  },
-  {
-    id: uuidv4(),
-    title: "التطوع في المجتمع",
-    description: "التطوع في المجتمع للمساعدة في المجتمع",
-    isCompleted: false,
-  },
-];
+
+
 
 export default function TodoList() {
-  const [todos, setTodos] = useState(intialTodos);
+  const { todos, setTodos } = useContext(TodosContext);
   const [titleInput, setTitleInput] = useState("");
 
-  function handleIsCheckClick(id) {
-    const newTodos = todos.map((todo) => {
-      if (todo.id === id) {
-        return { ...todo, isCompleted: !todo.isCompleted };
-      }
-      return todo;
-    });
-    setTodos(newTodos);
-  }
 
   const todosJsx = todos.map((todo) => (
-    <Todo key={todo.id} todo={todo} handleCheck={handleIsCheckClick} />
+    <Todo key={todo.id} todo={todo} />
   ));
 
   function handleAddClick(e) {
