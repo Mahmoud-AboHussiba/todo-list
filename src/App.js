@@ -2,33 +2,12 @@
 import "./App.css";
 import TodoList from "./componenets/TodoList";
 import { TodosContext } from "./contexts/todosContext"; 
-import { v4 as uuidv4 } from "uuid";
 import { useState } from "react";
-import DeleteModal from "./componenets/DeleteModal";
 
- const intialTodos = [
-   {
-     id: uuidv4(),
-     title: "قراءة القرآن",
-     description: " قراءة القرآن الكريم من الآية الأولى إلى الآية الأخيرة",
-     isCompleted: true,
-   },
-   {
-     id: uuidv4(),
-     title: " ممارسة التمارين الرياضية",
-     description: " ممارسة التمارين الرياضية للحفاظ على صحتك الجسدية",
-     isCompleted: false,
-   },
-   {
-     id: uuidv4(),
-     title: "التطوع في المجتمع",
-     description: "التطوع في المجتمع للمساعدة في المجتمع",
-     isCompleted: false,
-   },
- ];
+
 
 function App() {
-   const [todos, setTodos] = useState(intialTodos);
+   const [todos, setTodos] = useState([]);
  
   return (
     <TodosContext.Provider value={{todos, setTodos}}>

@@ -45,7 +45,7 @@ export default function TodoList() {
   }
 
   return (
-    <div className="container size-6/12 py-5 bg-white rounded-lg border-2 border-gray-300 scroll-m-2 ">
+    <div className="container size-10/12 py-5 bg-white rounded-lg border-2 border-gray-300 scroll-m-2 ">
       <div className="py-2">
         <h1 className="text-5xl text-center">مهامي</h1>
         <hr></hr>
