@@ -29,3 +29,10 @@
   font-weight: 300;
 }
 /* Custom Fonts */
+
+.filter-item {
+  border: color(rgb(50, 50, 121)) !important;
+}
+.filter-item::selection {
+  background-color: #701515 !important;
+}

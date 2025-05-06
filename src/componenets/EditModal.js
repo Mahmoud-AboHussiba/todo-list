@@ -32,6 +32,7 @@ export default function EditModal({ todo }) {
       return t;
     });
     setTodos(newTodos);
+    localStorage.setItem("todos", JSON.stringify(newTodos));
     setOpen(false);
   }
 
@@ -130,7 +131,7 @@ export default function EditModal({ todo }) {
                 onClick={(e) => {
                   setTitle(todo.title);
                   setDescription(todo.description);
-                  setIsCompleted(todo.isCompleted);   
+                  setIsCompleted(todo.isCompleted);
                   setOpen(false);
                 }}
                 className=" border-red-500 bg-red-500 hover:bg-red-600"

@@ -34,7 +34,7 @@ function App() {
     <TodosContext.Provider value={{todos, setTodos}}>
     <div
       dir="rtl"
-      className="font-alexandria font-normal bg-gray-800 min-h-screen flex justify-center items-center"
+      className="font-alexandria font-normal bg-gray-800 min-h-screen flex justify-center items-center "
     >
       <TodoList />
     </div>
