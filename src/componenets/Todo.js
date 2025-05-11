@@ -1,12 +1,10 @@
 import React from "react";
-import { Check } from "iconoir-react";
+import { Check, EditPencil, Trash } from "iconoir-react";
 import { IconButton } from "@material-tailwind/react";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { TodosContext } from "../contexts/todosContext";
-import DeleteModal from "./DeleteModal";
-import EditModal from "./EditModal";
 
-export default function Todo({ todo }) {
+export default function Todo({ todo, showDeleteModal, showEditModal }) {
   const { todos, setTodos } = useContext(TodosContext);
 
   function handleCheckClick() {
@@ -46,10 +44,24 @@ export default function Todo({ todo }) {
         {/* Actions */}
         <div dir="ltr" className="basis-1/4 flex flex-row flex-wrap gap-3 ">
           <div className="flex items-center">
-            <DeleteModal todo={todo}></DeleteModal>
+            <IconButton
+              isCircular
+              variant="outline"
+              className="border-red-500 bg-white hover:bg-slate-300"
+              onClick={() => {showDeleteModal(todo)}}
+            >
+              <Trash color="red" />
+            </IconButton>
           </div>
           <div className="flex items-center">
-            <EditModal todo={todo}></EditModal>
+            <IconButton
+              isCircular
+              variant="outline"
+              className="border-blue-500 bg-white hover:bg-slate-300"
+              onClick={() => showEditModal(todo)}
+            >
+              <EditPencil className="h-4 w-4 stroke-2" color="#3b82f6" />
+            </IconButton>
           </div>
           <div className="flex items-center">
             <IconButton
