@@ -17,7 +17,7 @@ import { Xmark } from "iconoir-react";
 import toast from "react-hot-toast";
 
 export default function TodoList() {
-  const { todos, setTodos } = useContext(TodosContext);
+  const { todosReducerState, dispatchTodosReducer } = useContext(TodosContext);
   const [titleInput, setTitleInput] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
 
@@ -25,15 +25,12 @@ export default function TodoList() {
   const [openEditModal, setOpenEditModal] = useState();
   const [modalTodo, setModalTodo] = useState({});
 
-  {
-    /* Start Filter */
-  }
   const completedTodos = useMemo(() => {
-    return todos.filter((todo) => todo.isCompleted);
-  }, [todos]);
+    return todosReducerState.filter((todo) => todo.isCompleted);
+  }, [todosReducerState]);
   const notCompletedTodos = useMemo(() => {
-    return todos.filter((todo) => !todo.isCompleted);
-  }, [todos]);
+    return todosReducerState.filter((todo) => !todo.isCompleted);
+  }, [todosReducerState]);
 
   let filteredTodos = [];
 
@@ -42,20 +39,7 @@ export default function TodoList() {
   } else if (statusFilter === "notCompleted") {
     filteredTodos = notCompletedTodos;
   } else {
-    filteredTodos = todos;
-  }
-
-  const todosJsx = filteredTodos.map((todo) => (
-    <Todo
-      key={todo.id}
-      todo={todo}
-      showDeleteModal={showDeleteModal}
-      showEditModal={showEditModal}
-    ></Todo>
-  ));
-
-  {
-    /* End Filter */
+    filteredTodos = todosReducerState;
   }
 
   function showDeleteModal(todo) {
@@ -69,48 +53,46 @@ export default function TodoList() {
   }
 
   useEffect(() => {
-    const todos = JSON.parse(localStorage.getItem("todos"));
-    if (todos) {
-      setTodos(todos);
-    }
+    dispatchTodosReducer({ type: "GET_TODOS", payload: {} });
   }, []);
 
   function handleAddClick(e) {
     e.preventDefault();
-    const newTodo = {
-      id: uuidv4(),
-      title: titleInput,
-      description: "",
-      isCompleted: false,
-    };
-    setTodos([...todos, newTodo]);
-    localStorage.setItem("todos", JSON.stringify([...todos, newTodo]));
+    dispatchTodosReducer({
+      type: "ADD_TODO",
+      payload: {
+        id: uuidv4(),
+        title: titleInput,
+        description: "",
+        isCompleted: false,
+      },
+    });
     setTitleInput("");
     toast.success("تم إضافة المهمة بنجاح");
   }
 
   function handelSaveClick() {
-    const newTodos = todos.map((t) => {
-      if (t.id === modalTodo.id) {
-        return modalTodo;
-      }
-      return t;
-    });
-    setTodos(newTodos);
-    localStorage.setItem("todos", JSON.stringify(newTodos));
+    dispatchTodosReducer({ type: "UPDATE_TODO", payload: modalTodo });
     setOpenEditModal(false);
     setModalTodo({});
     toast.success("تم تعديل المهمة بنجاح");
   }
 
   function handleDeleteClick() {
-    const newTodos = todos.filter((t) => t.id !== modalTodo.id);
-    setTodos(newTodos);
+    dispatchTodosReducer({ type: "DELETE_TODO", payload: modalTodo });
     setModalTodo({});
     setOpenDeleteModal(false);
-    localStorage.setItem("todos", JSON.stringify(newTodos));
     toast.success("تم حذف المهمة بنجاح");
   }
+
+    const todosJsx = filteredTodos.map((todo) => (
+      <Todo
+        key={todo.id}
+        todo={todo}
+        showDeleteModal={showDeleteModal}
+        showEditModal={showEditModal}
+      ></Todo>
+    ));
 
   return (
     <>

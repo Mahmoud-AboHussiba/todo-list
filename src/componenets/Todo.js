@@ -1,22 +1,18 @@
 import React from "react";
 import { Check, EditPencil, Trash } from "iconoir-react";
 import { IconButton } from "@material-tailwind/react";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { TodosContext } from "../contexts/todosContext";
 import toast from "react-hot-toast";
 
 export default function Todo({ todo, showDeleteModal, showEditModal }) {
-  const { todos, setTodos } = useContext(TodosContext);
+  const { dispatchTodosReducer } = useContext(TodosContext);
 
   function handleCheckClick() {
-    const newTodos = todos.map((t) => {
-      if (t.id === todo.id) {
-        return { ...t, isCompleted: !t.isCompleted };
-      }
-      return t;
+    dispatchTodosReducer({
+      type: "TOGGLE_TODO",
+      payload: todo,
     });
-    setTodos(newTodos);
-    localStorage.setItem("todos", JSON.stringify(newTodos));
     toast.success("تم تغيير حالة المهمة بنجاح");
   }
 
