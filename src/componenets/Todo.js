@@ -3,6 +3,7 @@ import { Check, EditPencil, Trash } from "iconoir-react";
 import { IconButton } from "@material-tailwind/react";
 import { useContext, useState } from "react";
 import { TodosContext } from "../contexts/todosContext";
+import toast from "react-hot-toast";
 
 export default function Todo({ todo, showDeleteModal, showEditModal }) {
   const { todos, setTodos } = useContext(TodosContext);
@@ -16,6 +17,7 @@ export default function Todo({ todo, showDeleteModal, showEditModal }) {
     });
     setTodos(newTodos);
     localStorage.setItem("todos", JSON.stringify(newTodos));
+    toast.success("تم تغيير حالة المهمة بنجاح");
   }
 
   const checkClass = todo.isCompleted

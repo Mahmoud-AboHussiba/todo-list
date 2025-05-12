@@ -14,14 +14,15 @@ import { v4 as uuidv4 } from "uuid";
 import { useState, useContext, useEffect, useMemo } from "react";
 import { TodosContext } from "../contexts/todosContext";
 import { Xmark } from "iconoir-react";
+import toast from "react-hot-toast";
 
 export default function TodoList() {
   const { todos, setTodos } = useContext(TodosContext);
   const [titleInput, setTitleInput] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+
   const [openDeleteModal, setOpenDeleteModal] = useState();
   const [openEditModal, setOpenEditModal] = useState();
-
   const [modalTodo, setModalTodo] = useState({});
 
   {
@@ -85,6 +86,7 @@ export default function TodoList() {
     setTodos([...todos, newTodo]);
     localStorage.setItem("todos", JSON.stringify([...todos, newTodo]));
     setTitleInput("");
+    toast.success("تم إضافة المهمة بنجاح");
   }
 
   function handelSaveClick() {
@@ -98,6 +100,7 @@ export default function TodoList() {
     localStorage.setItem("todos", JSON.stringify(newTodos));
     setOpenEditModal(false);
     setModalTodo({});
+    toast.success("تم تعديل المهمة بنجاح");
   }
 
   function handleDeleteClick() {
@@ -106,11 +109,12 @@ export default function TodoList() {
     setModalTodo({});
     setOpenDeleteModal(false);
     localStorage.setItem("todos", JSON.stringify(newTodos));
+    toast.success("تم حذف المهمة بنجاح");
   }
 
   return (
     <>
-      <Dialog size="sm"  open={openDeleteModal} handler={setOpenDeleteModal}>
+      <Dialog size="sm" open={openDeleteModal} handler={setOpenDeleteModal}>
         <Dialog.Overlay>
           <Dialog.Content>
             <div className="flex items-center justify-between gap-4" dir="rtl">
