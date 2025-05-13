@@ -11,13 +11,13 @@ import {
 } from "@material-tailwind/react";
 import Todo from "./Todo";
 import { v4 as uuidv4 } from "uuid";
-import { useState, useContext, useEffect, useMemo } from "react";
-import { TodosContext } from "../contexts/todosContext";
+import { useState, useEffect, useMemo } from "react";
+import { useTodos } from "../contexts/todosContext";
 import { Xmark } from "iconoir-react";
 import toast from "react-hot-toast";
 
 export default function TodoList() {
-  const { todosReducerState, dispatchTodosReducer } = useContext(TodosContext);
+  const [ todosReducerState, dispatchTodosReducer ]= useTodos();
   const [titleInput, setTitleInput] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
 

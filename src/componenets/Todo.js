@@ -1,12 +1,11 @@
 import React from "react";
 import { Check, EditPencil, Trash } from "iconoir-react";
 import { IconButton } from "@material-tailwind/react";
-import { useContext } from "react";
-import { TodosContext } from "../contexts/todosContext";
+import { useTodos } from "../contexts/todosContext";
 import toast from "react-hot-toast";
 
 export default function Todo({ todo, showDeleteModal, showEditModal }) {
-  const { dispatchTodosReducer } = useContext(TodosContext);
+  const [ todosReducerState, dispatchTodosReducer ]= useTodos();
 
   function handleCheckClick() {
     dispatchTodosReducer({

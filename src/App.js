@@ -1,20 +1,12 @@
 // import logo from './logo.svg';
 import "./App.css";
 import TodoList from "./componenets/TodoList";
-import { TodosContext } from "./contexts/todosContext";
-import { useState, useReducer } from "react";
 import { Toaster } from "react-hot-toast";
-import todosReducer from "./reducers/todosReducer";
+import TodosProvider from "./contexts/todosContext";
 
 function App() {
-  // const [todos, setTodos] = useState([]);
-  const [todosReducerState, dispatchTodosReducer] = useReducer(
-    todosReducer,
-    []
-  );
-
   return (
-    <TodosContext.Provider value={{ todosReducerState, dispatchTodosReducer }}>
+    <TodosProvider>
       <Toaster position="bottom-left" reverseOrder={false} />
       <div
         dir="rtl"
@@ -22,7 +14,7 @@ function App() {
       >
         <TodoList />
       </div>
-    </TodosContext.Provider>
+    </TodosProvider>
   );
 }
 
